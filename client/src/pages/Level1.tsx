@@ -11,7 +11,7 @@ import {
   type DragStartEvent,
 } from "@dnd-kit/core";
 import { AnimatePresence } from "framer-motion";
-import { completeLevel1, debugAllNewProvinceIds, fetchOldProvinces, fetchPieces, validateMerge } from "../api/game";
+import { completeLevel1, fetchOldProvinces, fetchPieces, validateMerge } from "../api/game";
 import MergeCard from "../components/MergeCard";
 import MergeFlightOverlay, { type FlightSource } from "../components/MergeFlightOverlay";
 import TrayPiece from "../components/TrayPiece";
@@ -218,15 +218,6 @@ export default function Level1() {
     setBusy(false);
   }
 
-  // TEMPORARY dev helper — remove this along with the debug API before
-  // sharing this build. Skips straight to Level 2 for quick testing.
-  async function handleDevSkip() {
-    const ids = await debugAllNewProvinceIds();
-    setLockedNewProvinceIds(ids);
-    setLevel1TimeMs(0);
-    navigate("/play/level2");
-  }
-
   async function handleLevelComplete() {
     setBusy(true);
     try {
@@ -253,13 +244,6 @@ export default function Level1() {
           <h1 className="text-xl font-bold text-slate-800">Màn 1</h1>
           <div className="flex items-center gap-2 sm:gap-3">
             <span className="text-sm text-slate-500">Đã ghép: {tray.length}</span>
-            <button
-              onClick={handleDevSkip}
-              title="Bỏ qua màn 1 để test màn 2 (nút tạm thời)"
-              className="text-xs font-medium px-2.5 py-1 rounded border border-dashed border-amber-400 text-amber-600 bg-amber-50 hover:bg-amber-100"
-            >
-              ⏭ Skip (test)
-            </button>
           </div>
         </header>
 

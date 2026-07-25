@@ -83,12 +83,3 @@ không cần cấu hình CORS).
 6. Đăng nhập `/admin` bằng tài khoản ở bước 3, kiểm tra/sửa lại danh sách tỉnh
    thành (seed có thể sai sót, xem mục "Dữ liệu tỉnh thành"), rồi upload ảnh +
    gán lưới ở "Ảnh ghép".
-
-## Nút test tạm thời
-
-Màn 1 có nút **"⏭ Skip (test)"** (viền vàng đứt nét) để bỏ qua toàn bộ màn 1
-và nhảy thẳng sang màn 2 lúc đang phát triển/test. Nút này gọi một API debug
-(`GET /api/game/debug/all-new-province-ids`) lộ toàn bộ id tỉnh mới — cần gỡ
-bỏ cả nút lẫn API này (`server/src/routes/game.routes.ts`,
-`server/src/controllers/game.controller.ts`, `client/src/pages/Level1.tsx`)
-trước khi chia sẻ bản build cho người khác chơi.

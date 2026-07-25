@@ -36,13 +36,6 @@ export async function postLevel1Complete(req: Request, res: Response) {
   res.json(result);
 }
 
-// TEMPORARY dev helper so Level 2 can be tested without solving Level 1 by
-// hand each time. Leaks the answer key — remove before sharing this build.
-export async function debugAllNewProvinceIds(_req: Request, res: Response) {
-  const items = await prisma.newProvince.findMany({ select: { id: true } });
-  res.json(items.map((i) => i.id));
-}
-
 export async function getPuzzleCanvas(_req: Request, res: Response) {
   const active = await getActivePuzzleImage();
   if (!active) {

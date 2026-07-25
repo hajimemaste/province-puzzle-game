@@ -72,9 +72,3 @@ export async function fetchLeaderboard(limit = 10): Promise<ScoreEntryDTO[]> {
   const { data } = await apiClient.get<ScoreEntryDTO[]>("/api/game/leaderboard", { params: { limit } });
   return data;
 }
-
-// TEMPORARY dev helper — remove along with the server route before sharing this build.
-export async function debugAllNewProvinceIds(): Promise<string[]> {
-  const { data } = await apiClient.get<string[]>("/api/game/debug/all-new-province-ids");
-  return data;
-}

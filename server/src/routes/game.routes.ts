@@ -13,7 +13,4 @@ router.post("/verify-station-answer", game.postVerifyStationAnswer);
 router.post("/score", game.postScore);
 router.get("/leaderboard", game.getLeaderboard);
 
-// TEMPORARY — remove along with debugAllNewProvinceIds before sharing this build.
-router.get("/debug/all-new-province-ids", game.debugAllNewProvinceIds);
-
 export default router;
