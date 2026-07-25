@@ -1,0 +1,70 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+}
+
+model NewProvince {
+  id               String                       @id @default(cuid())
+  name             String
+  order            Int                          @default(0)
+  createdAt        DateTime                     @default(now())
+  oldProvinces     OldProvince[]
+  pieceAssignments PuzzleImagePieceAssignment[]
+}
+
+model OldProvince {
+  id            String      @id @default(cuid())
+  name          String
+  order         Int         @default(0)
+  createdAt     DateTime    @default(now())
+  newProvinceId String
+  newProvince   NewProvince @relation(fields: [newProvinceId], references: [id], onDelete: Cascade)
+}
+
+model PuzzleImage {
+  id               String                       @id @default(cuid())
+  imageUrl         String
+  gridRows         Int
+  gridCols         Int
+  answerText       String?
+  completionMessage String @default("Chúc mừng đội của bạn đã hoàn thành mật thư trạm 3, hãy tập hợp và báo cáo cho trạm trưởng nhé.")
+  isActive         Boolean                      @default(false)
+  createdAt        DateTime                     @default(now())
+  pieceAssignments PuzzleImagePieceAssignment[]
+  scores           ScoreEntry[]
+}
+
+model PuzzleImagePieceAssignment {
+  id            String      @id @default(cuid())
+  puzzleImageId String
+  puzzleImage   PuzzleImage @relation(fields: [puzzleImageId], references: [id], onDelete: Cascade)
+  newProvinceId String
+  newProvince   NewProvince @relation(fields: [newProvinceId], references: [id], onDelete: Cascade)
+  row           Int
+  col           Int
+  pieceImageUrl String?
+
+  @@unique([puzzleImageId, newProvinceId])
+}
+
+model ScoreEntry {
+  id            String       @id @default(cuid())
+  playerName    String
+  level1TimeMs  Int
+  level2TimeMs  Int
+  totalTimeMs   Int
+  puzzleImageId String?
+  puzzleImage   PuzzleImage? @relation(fields: [puzzleImageId], references: [id], onDelete: SetNull)
+  createdAt     DateTime     @default(now())
+}

@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, "Segoe UI", Roboto, sans-serif;
+  background-color: #f4f5f7;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+@keyframes disc-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.music-disc {
+  animation: disc-spin 4s linear infinite;
+  animation-play-state: paused;
+}
+
+.music-disc.is-spinning {
+  animation-play-state: running;
+}
