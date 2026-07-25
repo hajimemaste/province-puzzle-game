@@ -58,10 +58,14 @@ async function main() {
   });
   console.log(`Seeded admin user "${username}" (password: "${password}")`);
 
-  // Reset về danh sách chuẩn mỗi lần chạy seed (xoá NewProvince sẽ cascade
-  // xoá OldProvince và mọi PuzzleImagePieceAssignment đang trỏ tới chúng —
-  // admin sẽ cần gán lại lưới ảnh ghép sau khi reset).
-  await prisma.newProvince.deleteMany({});
+  // Chỉ seed tỉnh thành nếu database còn trống — script này chạy tự động mỗi
+  // lần container khởi động (xem Dockerfile) nên KHÔNG được xoá/ghi đè dữ
+  // liệu tỉnh thành hay gán ảnh ghép mà admin đã tự chỉnh sau lần seed đầu.
+  const existingCount = await prisma.newProvince.count();
+  if (existingCount > 0) {
+    console.log(`Đã có ${existingCount} tỉnh mới trong database, bỏ qua seed tỉnh thành.`);
+    return;
+  }
 
   let order = 0;
   for (const group of REAL_GROUPS) {

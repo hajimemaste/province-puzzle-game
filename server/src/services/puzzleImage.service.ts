@@ -1,9 +1,19 @@
+import fs from "fs";
 import path from "path";
 import sharp from "sharp";
 import { prisma } from "../prisma/client";
 
-const PIECES_DIR = path.join(__dirname, "..", "..", "uploads", "pieces");
-const ORIGINALS_DIR = path.join(__dirname, "..", "..", "uploads", "originals");
+// UPLOADS_DIR lets production point this at a persistent volume mount
+// (e.g. Railway) instead of the repo-local folder used in dev.
+const UPLOADS_ROOT = process.env.UPLOADS_DIR ?? path.join(__dirname, "..", "..", "uploads");
+const PIECES_DIR = path.join(UPLOADS_ROOT, "pieces");
+const ORIGINALS_DIR = path.join(UPLOADS_ROOT, "originals");
+
+for (const dir of [PIECES_DIR, ORIGINALS_DIR]) {
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
+}
 
 export function originalsDir() {
   return ORIGINALS_DIR;
